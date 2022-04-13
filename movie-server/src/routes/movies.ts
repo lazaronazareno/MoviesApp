@@ -1,6 +1,8 @@
 import express from 'express'
 import * as moviesServices from '../services/moviesServices'
+
 import toNewMovie from '../utils'
+import { fileUpload } from '../middleware/uploadfile'
 
 const router = express.Router()
 
@@ -25,6 +27,10 @@ router.post('/', (req, res) => {
   } catch (e: any) {
     res.status(400).send(e.message)
   }
+})
+
+router.post('/post/data', fileUpload, (req: express.Request, res: express.Response) => {
+  console.log(req.file)
 })
 
 export default router
