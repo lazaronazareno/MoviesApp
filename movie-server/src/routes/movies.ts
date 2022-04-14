@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
 import * as moviesServices from '../services/moviesServices'
 import csv from 'csvtojson'
+import path from 'path'
+import { con } from '../index'
 
 import toNewMovie from '../utils'
 import { fileUpload } from '../middleware/uploadfile'
@@ -31,24 +34,28 @@ router.post('/', (req, res) => {
 })
 
 router.post('/post/data', fileUpload, (req: express.Request, res: express.Response) => {
-  req.getConnection?.(async (err: any, conn: any) => {
+  con.connect((err) => {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    if (err) res.status(500).send('server error')
-    console.log(req.file?.filename)
-    const csvFileName = req.file?.filename
+    if (err) { res.status(500).send('server error') }
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    const csvFileName = '../csv/' + req.file?.filename
+    const csvFilePath = path.join(__dirname, csvFileName)
 
-    await csv().fromFile(csvFileName as string).then((source) => {
+    csv({ delimiter: ';' }).fromFile(csvFilePath).then((source) => {
       for (let i = 0; i < source.length; i++) {
-        const Titulo = source[i].Titulo
-        const Genero = source[i].Genero
-        const Año = source[i]['Año']
-        const Director = source[i].Director
-        const Actores = source[i].Actores
+        console.log(source[i].field1)
+        const Titulo = source[i].titulo
+        const Genero = source[i].genero
+        const Año = source[i].año
+        const Director = source[i].director
+        const Actores = source[i].actores
 
-        const insertStatement = 'INSERT INTO movies(?, ?, ?, ?, ?)'
+        const insertStatement = 'INSERT INTO movielist(titulo, genero, año, director, actores) VALUES(?, ?, ?, ?, ?)'
         const items = [Titulo, Genero, Año, Director, Actores]
+        console.log(insertStatement)
+        console.log(items)
 
-        conn.query(insertStatement, items, (err: any, _results: any, _fields: any) => {
+        con.query(insertStatement, items, (err: any, results: any, fields: any) => {
           // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
           if (err) {
             console.log('Unable to insert item at row', i + 1)
@@ -59,15 +66,6 @@ router.post('/post/data', fileUpload, (req: express.Request, res: express.Respon
       console.log('Data stored in movies database')
     }, function (err) {
       console.log(err)
-    })
-
-    conn.query('DROP TABLE sample', (_err: any, _drop: any) => {
-      const createStatament =
-          'create table movielist( titulo varchar(255) not null unique, genero varchar(255) not null, año char(4) not null, director varchar(255) not null, actores varchar(255) not null, primary key(titulo))'
-      conn.query(createStatament, (_err: any, _drop: any) => {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        if (err) return console.log(err)
-      })
     })
   })
 })
