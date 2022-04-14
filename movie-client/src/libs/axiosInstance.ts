@@ -11,7 +11,7 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 
 	const [error, setError] = useState<AxiosError>()
 
-	const [loading, setLoading] = useState(axiosParams.method === "GET" || axiosParams.method === "get");
+	const [loading, setLoading] = useState(true);
 
 	const fetchData = async (params: AxiosRequestConfig) => {
 			try {
