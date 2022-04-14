@@ -1,37 +1,23 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
-import * as moviesServices from '../services/moviesServices'
 import csv from 'csvtojson'
 import path from 'path'
 import { con } from '../index'
 
-import toNewMovie from '../utils'
 import { fileUpload } from '../middleware/uploadfile'
+import * as controllers from '../controllers/movieControllers'
 
 const router = express.Router()
 
-router.get('/', (_req, res) => {
-  res.send(moviesServices.getMovies())
-})
+router.get('/', controllers.getMovies)
 
-router.get('/:title', (req, res) => {
-  const movie = moviesServices.findByTitle(req.params.title)
-  return (movie != null)
-    ? res.send(movie)
-    : res.sendStatus(404)
-})
+router.get('/:title', controllers.getMoviesByTitle)
 
-router.post('/', (req, res) => {
-  try {
-    const newMovie = toNewMovie(req.body)
+router.post('/', controllers.addMovie)
 
-    const newMovieAdded = moviesServices.addMovie(newMovie)
+router.patch('/:title', controllers.editMovie)
 
-    res.json(newMovieAdded)
-  } catch (e: any) {
-    res.status(400).send(e.message)
-  }
-})
+router.delete('/:title', controllers.deleteMovie)
 
 router.post('/post/data', fileUpload, (req: express.Request, res: express.Response) => {
   con.connect((err) => {

@@ -1,8 +1,10 @@
 import express from 'express'
 import cors from 'cors'
-import mysql from 'mysql'
+import mysql from 'mysql2'
+import { DATA_SOURCES } from './vars.config'
 
 import moviesRouter from './routes/movies'
+const dataSource = DATA_SOURCES.mySqlDataSource
 
 const app = express()
 app.use(cors())
@@ -10,11 +12,10 @@ app.use(express.json())
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const con = mysql.createConnection({
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'root',
-  database: 'movies'
+  host: dataSource.DB_HOST,
+  user: dataSource.DB_USER,
+  password: dataSource.DB_PASSWORD,
+  database: dataSource.DB_DATABASE
 })
 
 con.connect((err) => {
@@ -24,13 +25,11 @@ con.connect((err) => {
       'error: ' + err.message)
   }
   console.log('connected')
-  con.query('DROP TABLE movielist', (_err: any, _drop: any) => {
-    const createStatament =
+  const createStatament =
         'CREATE TABLE movielist( titulo varchar(255) unique, genero varchar(255), año char(20), director varchar(255), actores varchar(255), primary key(titulo));'
-    con.query(createStatament, (_err: any, _drop: any) => {
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      if (err) return console.log(err)
-    })
+  con.query(createStatament, (_err: any, _drop: any) => {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (err) return console.log(err)
   })
 })
 

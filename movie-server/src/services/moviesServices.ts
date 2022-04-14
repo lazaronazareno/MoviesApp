@@ -1,19 +1,45 @@
 import { MovieData, NewMovie } from '../types'
-import moviesData from './Data.json'
+import { execute } from '../mysql-connector'
+import { MoviesQueries } from './moviesQueries'
 
-const movies: MovieData[] = moviesData as MovieData[]
-
-export const getMovies = (): MovieData[] => movies
-
-export const findByTitle = (titulo: string): MovieData | undefined => {
-  const data = movies.find(t => t.titulo === titulo)
-  return data
+export const getMovies = async (offset: any): Promise<MovieData[]> => {
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (!offset) {
+    return await execute<MovieData[]>(MoviesQueries.getMovies, [0])
+  }
+  return await execute<MovieData[]>(MoviesQueries.getMovies, [offset])
 }
 
-export const addMovie = (newMovie: NewMovie): MovieData => {
-  const newData = {
-    ...newMovie
-  }
-  movies.push(newData)
+export const getMovieByTitle = async (titulo: MovieData['titulo']): Promise<MovieData[]> => {
+  return await execute<MovieData[]>(MoviesQueries.getMoviesByTitle, titulo)
+}
+
+export const addMovie = async (newMovie: NewMovie): Promise<MovieData[]> => {
+  const newData = await execute<MovieData[]>(MoviesQueries.addMovie, [
+    newMovie.titulo,
+    newMovie.genero,
+    newMovie.año,
+    newMovie.director,
+    newMovie.actores
+  ])
   return newData
+}
+
+export const editMovie = async (newMovie: MovieData): Promise<MovieData[]> => {
+  const newData = await execute<MovieData[]>(MoviesQueries.editMovie, [
+    newMovie.titulo,
+    newMovie.genero,
+    newMovie.año,
+    newMovie.director,
+    newMovie.actores,
+    newMovie.titulo
+  ])
+  return newData
+}
+
+export const deleteMovieByTitle = async (titulo: MovieData['titulo']): Promise<MovieData | undefined> => {
+  const data = await execute<MovieData>(MoviesQueries.deleteMovie, [
+    titulo
+  ])
+  return data
 }
