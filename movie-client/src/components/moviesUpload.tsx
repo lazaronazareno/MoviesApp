@@ -1,16 +1,6 @@
 import axios from "axios"
 import React, { useState } from "react"
 
-/* interface Props {
-  movies : Array<{
-    titulo: string
-    genero: string
-    año: string
-    director: string
-    actores: string
-  }>
-} */
-
 export default function UploadMovies () {
    const [file, setFile] = useState()
 
@@ -40,11 +30,9 @@ export default function UploadMovies () {
     })
   }
   return (
-    <div>
-      <div>
-        <input id="fileInput" onChange={selectedHandler} type="file" />
-        <button onClick={sendHandler} type="submit">Upload</button>
-      </div>
-    </div>
+      <form className="d-flex">
+        <input className="form-control" id="fileInput" onChange={selectedHandler} type="file" />
+        <button className="btn btn-dark" onClick={sendHandler} type="submit">Upload</button>
+      </form>
   )
 }

@@ -1,7 +1,9 @@
 export const MoviesQueries = {
-  getMovies: 'SELECT * FROM movies.movielist LIMIT ?, 10;',
+  getMovies: 'SELECT * FROM movies.movielist LIMIT ?, ?;',
 
-  getMoviesByTitle: 'SELECT * FROM movies.movielist WHERE titulo = ?',
+  countMovies: 'SELECT COUNT(titulo) from movies.movielist;',
+
+  getMoviesByTitle: 'SELECT * FROM movies.movielist WHERE movielist.titulo LIKE ?',
 
   addMovie: 'INSERT INTO movies.movielist (titulo, genero, año, director, actores) VALUES (?, ?, ?, ?, ?);',
 

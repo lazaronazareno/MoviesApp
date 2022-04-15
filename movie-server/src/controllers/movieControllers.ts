@@ -3,10 +3,11 @@ import * as moviesServices from '../services/moviesServices'
 
 export const getMovies: express.RequestHandler = async (req: express.Request, res: express.Response) => {
   try {
-    const movies = await moviesServices.getMovies(parseInt(req.query.offset as string))
+    const movies = await moviesServices.getMovies(parseInt(req.query.offset as string), parseInt(req.query.limit as string))
+    const body = await moviesServices.countMovies()
 
     res.status(200).json({
-      movies
+      movies, body
     })
   } catch (error) {
     console.error('[moviesServices][getMovies][Error] ', typeof error === 'object' ? JSON.stringify(error) : error)
@@ -18,7 +19,8 @@ export const getMovies: express.RequestHandler = async (req: express.Request, re
 
 export const getMoviesByTitle: express.RequestHandler = async (req: express.Request, res: express.Response) => {
   try {
-    const movie = await moviesServices.getMovieByTitle(req.params.title)
+    const newTitle = `%${req.params.title}%`
+    const movie = await moviesServices.getMovieByTitle(newTitle)
 
     res.status(200).json({
       movie
