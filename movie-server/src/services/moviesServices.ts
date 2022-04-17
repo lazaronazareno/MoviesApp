@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { MovieData, NewMovie } from '../types'
 import { execute } from '../mysql-connector'
 import { MoviesQueries } from './moviesQueries'
+import csv from 'csvtojson'
 
 export const getMovies = async (offset: any, limit: any): Promise<MovieData[]> => {
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -17,8 +19,12 @@ export const countMovies = async (): Promise<MovieData[]> => {
   return await execute<MovieData[]>(MoviesQueries.countMovies, [])
 }
 
+export const searchMovieByTitle = async (titulo: MovieData['titulo']): Promise<MovieData[]> => {
+  return await execute<MovieData[]>(MoviesQueries.searchMoviesByTitle, titulo)
+}
+
 export const getMovieByTitle = async (titulo: MovieData['titulo']): Promise<MovieData[]> => {
-  return await execute<MovieData[]>(MoviesQueries.getMoviesByTitle, titulo)
+  return await execute<MovieData[]>(MoviesQueries.getMovieByTitle, titulo)
 }
 
 export const addMovie = async (newMovie: NewMovie): Promise<MovieData[]> => {
@@ -45,8 +51,27 @@ export const editMovie = async (newMovie: MovieData): Promise<MovieData[]> => {
 }
 
 export const deleteMovieByTitle = async (titulo: MovieData['titulo']): Promise<MovieData | undefined> => {
-  const data = await execute<MovieData>(MoviesQueries.deleteMovie, [
-    titulo
-  ])
+  console.log(titulo)
+  const data = await execute<MovieData>(MoviesQueries.deleteMovie, titulo)
+  console.log(data)
   return data
+}
+
+export const postData = async (name: string): Promise<[]> => {
+  const aaa: MovieData[] | any = []
+  const jsons = await csv({ delimiter: ';' }).fromFile(name)
+  for (let i = 0; i < jsons.length; i++) {
+    const Titulo = jsons[i].titulo
+    const Genero = jsons[i].genero
+    const Año = jsons[i].año
+    const Director = jsons[i].director
+    const Actores = jsons[i].actores
+
+    const data: MovieData[] = await execute<MovieData[]>(MoviesQueries.uploadData, [
+      Titulo, Genero, Año, Director, Actores
+    ])
+    aaa.push(data)
+  }
+
+  return aaa as []
 }

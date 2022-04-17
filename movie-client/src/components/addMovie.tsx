@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import useAxios from '../libs/axiosInstance'
-import Loader from '../components/loader/loader'
+import Loader from './loader/loader'
 import { useLocation } from "react-router-dom"
-import { MovieTable } from "./movieTable"
 import { Link } from "react-router-dom"
 
-export default function EditMovie () {
+export default function AddMovie () {
   const location = useLocation()
   const {response, loading, error, fetchData } = useAxios({})
-  const movie = response?.data.movie[0]
   const [values, setValues] = useState({
-    titulo: movie ? movie.titulo : '',
-    genero : movie ? movie.genero : '',
-    año : movie ? movie.año : '',
-    director : movie ? movie.director : '',
-    actores : movie ? movie.actores : '',
+    titulo: '',
+    genero : '',
+    año : '',
+    director : '',
+    actores : '',
   })
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +23,7 @@ export default function EditMovie () {
     event.preventDefault()
     setValues({ ...values })
     await fetchData({
-      method:"PATCH",
+      method:"POST",
       data: {...values},
       url:`${location.pathname}` ,
       headers:{
@@ -33,16 +31,6 @@ export default function EditMovie () {
       },
     })
   }
-
-useEffect(() => {
-  fetchData({
-    method:"GET",
-    url:`${location.pathname}` ,
-    headers:{
-      accept: '/'
-    }
-  })
-},[])
 
     return (
         <form onSubmit={onSubmit} className="p-4 d-flex flex-column text-start">
@@ -59,8 +47,11 @@ useEffect(() => {
           <button className="btn btn-dark" type="submit">Edit</button>
           {loading && ( <Loader /> )}
           {error && ( <p>{error.message}</p> )}
-          {!loading && !error && response && (
-            <MovieTable movies={response?.data.movieResponse ? [response?.data.movie] : response?.data.movie }/>
+          {!loading && !error && response?.data.movie && (
+            <div>
+              <h1>New Movie Added</h1>
+              <Link className="btn btn-lg btn-dark" to='/'>Volver</Link>
+            </div>
           )}
           <Link className="btn btn-dark" to='/'>Go back</Link>
         </form>

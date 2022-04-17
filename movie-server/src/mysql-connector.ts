@@ -15,8 +15,9 @@ export const execute = async <T>(query: string, params: string[] | Object): Prom
         else resolve(JSON.parse(JSON.stringify(results)))
       })
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('[mysql.connector][execute][Error]: ', error)
-    throw new Error('failed to execute MySQL query')
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    throw new Error(error)
   }
 }

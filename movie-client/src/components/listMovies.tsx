@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react"
 import useAxios from '../libs/axiosInstance'
 import Loader from '../components/loader/loader'
+import { MovieTable } from "./movieTable"
 import { Link } from "react-router-dom"
-interface Movies {
-    titulo: string
-    genero: string
-    año: string
-    director: string
-    actores: string
-}
+import { SearchModal } from "./searchModal"
+import { UploadModal } from "./uploadModal"
 
 const ListMovies = () => {
   const [page, setPage] = useState(0)
@@ -50,49 +46,26 @@ const ListMovies = () => {
     <div className="container-fluid d-flex flex-column justify-content-center align-items-center mt-4">
       {loading && ( <Loader /> )}
       {error && ( <p>{error.message}</p> )}
-      {!loading && !error && (
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Genre</th>
-                <th scope="col">Year</th>
-                <th scope="col">Director</th>
-                <th scope="col">Actors</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Detele</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              response?.data.movies.map((movies: Movies) => {
-                return (
-                  <tr key={movies.titulo}>
-                    <td>{movies.titulo}</td>
-                    <td>{movies.genero}</td>
-                    <td>{movies.año}</td>
-                    <td>{movies.director}</td>
-                    <td>{movies.actores}</td>
-                    <td>
-                      <Link to={`/edit/${movies.titulo}`} className="btn btn-dark">Edit</Link>
-                    </td>
-                    <td>
-                      <Link to={`/${movies.titulo}`} className="btn btn-dark">Delete</Link>
-                    </td>
-                  </tr>
-                )
-              })
-            }
-            </tbody>
+      {!loading && !error && response?.data.movies && (
+          <>
+          <div className="d-flex justify-content-between w-100">
+            <Link to='/add' className="btn btn-lg btn-dark d-flex">New Movie</Link>
+            <SearchModal />
+            <UploadModal />
+          </div>
+          <MovieTable movies={response?.data.movies} />
             <div className="container d-flex justify-content-evenly p-2">
               { (page >= 10) && (
                 <button className="btn btn-lg btn-dark" onClick={handlerPrevPage}>Prev Page</button>
               )}
+              {
+                <h3>Page {page === 0 ? 1 : `${(page/10) + 1}`}</h3>
+              }
               { (page < lastPage) && (
                 <button className="btn btn-lg btn-dark" onClick={handlerNextPage}>Next Page</button>
               )}
             </div>
-        </table>
+          </>
       )}
   </div>
   )

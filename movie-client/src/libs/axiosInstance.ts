@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse	} from 'axios'
 
 const baseURL: string = 'http://localhost:4000/'
 
@@ -12,14 +12,18 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 	const [error, setError] = useState<AxiosError>()
 
 	const [loading, setLoading] = useState(axiosParams.method === "GET" || axiosParams.method === "get")
+
 	
 	const fetchData = async (params: AxiosRequestConfig) => {
+		console.log(JSON.stringify(params))
 			try {
 				const result = await axios.request(params)
+				console.log(result)
 				setResponse(result)
 			}
 
 			catch(err: any) {
+				console.log(err)
 				setError(err)
 			}
 

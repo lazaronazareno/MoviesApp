@@ -1,4 +1,5 @@
 import express from 'express'
+import { fileUpload } from './middleware/uploadfile'
 import cors from 'cors'
 import mysql from 'mysql2'
 import { DATA_SOURCES } from './vars.config'
@@ -9,6 +10,7 @@ const dataSource = DATA_SOURCES.mySqlDataSource
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(fileUpload)
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const con = mysql.createConnection({
@@ -32,13 +34,7 @@ con.connect((err) => {
     if (err) return console.log(err)
   })
 })
-
 const PORT = 4000
-
-app.get('/ping', (_req, res) => {
-  console.log('ping' + new Date().toLocaleDateString())
-  res.send('pong')
-})
 
 app.use('/', moviesRouter)
 
