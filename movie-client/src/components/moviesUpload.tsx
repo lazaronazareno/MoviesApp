@@ -11,29 +11,34 @@ const UploadMovies: React.FC<unknown> = () => {
    const { loading, error, fetchData } = useAxios({})
 
   const selectedHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    console.log(file)
     setFile(e.currentTarget.files?.[0])
   }
 
   const sendHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    console.log(file)
     if(!file) {
       alert('not file')
+    } else if (file.type !== 'text/csv') {
+      alert('invalid file type: only .csv files accepted')
+    } else {
+      setTime(true)
+      console.log(JSON.stringify(file))
+  
+      
+      const formData = new FormData()
+      formData.append('archivo', file as unknown as Blob)
+      for (const value of formData.values()) {
+        console.log(value);
+     }
+  
+      fetchData({
+        method:"POST",
+        data: formData,
+        url:`/post/data/` ,
+      })
     }
-    setTime(true)
-    console.log(JSON.stringify(file))
-
-    
-    const formData = new FormData()
-    formData.append('archivo', file as unknown as Blob)
-    for (const value of formData.values()) {
-      console.log(value);
-   }
-
-    fetchData({
-      method:"POST",
-      data: formData,
-      url:`/post/data/` ,
-    })
   }
   useEffect( () =>{
     setTimeout(() => {
