@@ -4,7 +4,6 @@ import Loader from '../components/loader/loader'
 import { MovieTable } from "./movieTable"
 import { Link } from "react-router-dom"
 import { SearchModal } from "./searchModal"
-import { UploadModal } from "./uploadModal"
 
 const ListMovies = () => {
   const [page, setPage] = useState(0)
@@ -51,7 +50,7 @@ const ListMovies = () => {
           <div className="d-flex justify-content-between w-100">
             <Link to='/add' className="btn btn-lg btn-dark d-flex">New Movie</Link>
             <SearchModal />
-            <UploadModal />
+            <Link to='/upload' className="btn btn-lg btn-dark d-flex">Upload File</Link>
           </div>
           <MovieTable movies={response?.data.movies} />
             <div className="container d-flex justify-content-evenly p-2">

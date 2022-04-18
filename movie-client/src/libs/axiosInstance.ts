@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse	} from 'axios'
 
-const baseURL: string = 'http://localhost:4000/'
+const baseURL = 'http://localhost:4000/'
 
 axios.defaults.baseURL = baseURL
 
@@ -22,9 +22,11 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 				setResponse(result)
 			}
 
-			catch(err: any) {
-				console.log(err)
-				setError(err)
+			catch(err) {
+				if (axios.isAxiosError(err)) {
+					console.log(err)
+					setError(err)
+				}
 			}
 
 			finally{

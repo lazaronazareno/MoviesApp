@@ -34,6 +34,10 @@ export default function AddMovie () {
 
     return (
         <form onSubmit={onSubmit} className="p-4 d-flex flex-column text-start">
+          <div className="d-flex justify-content-between">
+            <h1>New Movie Form</h1>
+            <Link className="btn btn-dark my-3" to='/'>Go back</Link>
+          </div>
           <label htmlFor="title" className="form-label">Titulo: </label>
           <input name="titulo" className="form-control" id="title" onChange={onChange} type="text" />
           <label htmlFor="genre" className="form-label">Genero: </label>
@@ -44,16 +48,14 @@ export default function AddMovie () {
           <input name="director" className="form-control" id="director" onChange={onChange} type="text" />
           <label htmlFor="actors" className="form-label">Actores: </label>
           <input name="actores" className="form-control" id="actors" onChange={onChange} type="text" />
-          <button className="btn btn-dark" type="submit">Edit</button>
+          <button className="btn btn-dark my-3" type="submit">Submit</button>
           {loading && ( <Loader /> )}
           {error && ( <p>{error.message}</p> )}
           {!loading && !error && response?.data.movie && (
             <div>
               <h1>New Movie Added</h1>
-              <Link className="btn btn-lg btn-dark" to='/'>Volver</Link>
             </div>
           )}
-          <Link className="btn btn-dark" to='/'>Go back</Link>
         </form>
     )
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import express from 'express'
 import path from 'path'
 import * as moviesServices from '../services/moviesServices'
@@ -100,7 +101,6 @@ export const deleteMovie: express.RequestHandler = async (req: express.Request, 
 }
 
 export const postData: express.RequestHandler = async (req: express.Request, res: express.Response) => {
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
   const csvFileName = '../csv/' + req.file?.filename
   const csvFilePath = path.join(__dirname, csvFileName)
   const jsons = await csv({ delimiter: ';' }).fromFile(csvFilePath)

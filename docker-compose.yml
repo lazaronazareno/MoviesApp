@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_HOST: $MYSQL_HOST
+      MYSQL_USER: $MYSQL_USER
+    ports:
+      - "9906:3306"
+    expose:
+      - 9906
+    networks:
+      - shared-network
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+
+  movie-server:
+    container_name: movie-server
+    restart: unless-stopped
+    image: movie-server:1.0.0.
+    build:
+      context: movie-server
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    networks:
+      - shared-network
+    depends_on:
+      - mysql
+
+  movie-client:
+    container_name: movie-client
+    restart: unless-stopped
+    image: movie-client:1.0.0.
+    build:
+      context: movie-client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - shared-network
+    depends_on:
+      - movie-server
+
+networks:
+  shared-network:

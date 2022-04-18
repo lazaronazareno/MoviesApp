@@ -46,6 +46,10 @@ useEffect(() => {
 
     return (
         <form onSubmit={onSubmit} className="p-4 d-flex flex-column text-start">
+          <div className="d-flex justify-content-between">
+            <h1>Edit Movie Form</h1>
+            <Link className="btn btn-dark my-3" to='/'>Go back</Link>
+          </div>
           <label htmlFor="title" className="form-label">Titulo: </label>
           <input name="titulo" className="form-control" id="title" onChange={onChange} type="text" />
           <label htmlFor="genre" className="form-label">Genero: </label>
@@ -62,7 +66,6 @@ useEffect(() => {
           {!loading && !error && response && (
             <MovieTable movies={response?.data.movieResponse ? [response?.data.movie] : response?.data.movie }/>
           )}
-          <Link className="btn btn-dark" to='/'>Go back</Link>
         </form>
     )
   }

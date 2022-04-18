@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { MovieData, NewMovie } from '../types'
 import { execute } from '../mysql-connector'
@@ -5,10 +6,8 @@ import { MoviesQueries } from './moviesQueries'
 import csv from 'csvtojson'
 
 export const getMovies = async (offset: any, limit: any): Promise<MovieData[]> => {
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!offset && !limit) {
     return await execute<MovieData[]>(MoviesQueries.getMovies, [0, 10])
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   } else if (!limit) {
     return await execute<MovieData[]>(MoviesQueries.getMovies, [offset, 10])
   }

@@ -34,12 +34,12 @@ export const SearchMovie = () => {
 
     return (
         <form onSubmit={onSubmit}>
-          <label htmlFor="search" className="form-label">Search by Movie or keyword :</label>
+          <label htmlFor="search" className="form-label fs-2">Search by Movie or keyword :</label>
           <input name="search" className="form-control" id="search" onChange={onChange} type="text" />
-          <button className="btn btn-dark" type="submit">Search</button>
+          <button className="btn btn-dark m-3" type="submit">Search</button>
           {loading && ( <Loader /> )}
           {response?.data.movies.length === 0 && ( <h2>Movie not found</h2> )}
-          {!loading && !error && response?.data.movies.length !== 0 && (
+          {!loading && !error && response?.data.movies && response?.data.movies.length !== 0 && (
             <>
             {<h2>{response?.data.movies.length} results found</h2>}
               <MovieTable movies={response?.data.movies} />
