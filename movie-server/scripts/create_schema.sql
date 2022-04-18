@@ -1,4 +1,5 @@
 CREATE DATABASE movies;
+USE movies;
 CREATE TABLE movielist(
   titulo varchar(255) unique,
   genero varchar(255),
