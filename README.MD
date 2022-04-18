@@ -11,13 +11,9 @@ Execute the scripts in MySQL database in the following order: // Ejecutar los sc
 
 1. @create_schema.sql
 
-// create user :   
-
-2. @create_user.sql
-
 // insert data    
 
-3. @seed_data.sql
+2. @seed_data.sql
 
 2) Copy .env.example to .env and fill with database credentials. // crear un archivo .env en movie-server y completarlo con los datos de referencia de .env.example
 
