@@ -17,6 +17,11 @@ Execute the scripts in MySQL database in the following order: // Ejecutar los sc
 
 2) Copy .env.example to .env and fill with database credentials. // crear un archivo .env en movie-server y completarlo con los datos de referencia de .env.example
 
+Install Dependencies : 
+``` bash
+npm install
+```
+
 Setting enviroment vars : 
 ``` bash
 set -a 
