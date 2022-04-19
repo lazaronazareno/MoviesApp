@@ -22,11 +22,7 @@ Install Dependencies :
 npm install
 ```
 
-Setting enviroment vars : 
-``` bash
-set -a 
-source .env
-```
+Check if env var MYSQL_HOST='localhost'
 
 ## Start local server
 in /movie-server run // en la carpeta movie-server ejecutar :
@@ -42,4 +38,10 @@ in /movie-client run // en la carpeta movie-client ejecutar :
 npm start
 ```
 
-docker in progress...
+## Docker
+
+Check if env var MYSQL_HOST='mysql'
+
+``` bash
+docker-compose up -d
+```
