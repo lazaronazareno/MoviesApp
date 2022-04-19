@@ -1,8 +1,6 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { createPool, Pool } from 'mysql2'
-import { DATA_SOURCES } from './vars.config'
-
-const dataSource = DATA_SOURCES.mySqlDataSource
 
 let pool: Pool
 
@@ -10,12 +8,12 @@ let pool: Pool
 export const init = () => {
   try {
     pool = createPool({
-      connectionLimit: dataSource.DB_CONNECTION_LIMIT,
-      host: dataSource.DB_HOST,
-      user: dataSource.DB_USER,
-      password: dataSource.DB_PASSWORD,
-      database: dataSource.DB_DATABASE,
-      port: dataSource.DB_PORT as unknown as number
+      connectionLimit: process.env.MYSQL_CONNECTION_LIMIT as unknown as number,
+      host: process.env.MYSQL_HOST,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+      port: process.env.MYSQL_PORT as unknown as number
     })
 
     pool.getConnection((err) => {

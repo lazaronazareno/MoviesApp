@@ -3,12 +3,13 @@ version: '3.8'
 services:
   mysql:
     image: mysql
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
-      MYSQL_DATABASE: $MYSQL_DATABASE
-      MYSQL_HOST: $MYSQL_HOST
-      MYSQL_USER: $MYSQL_USER
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=movies
+      - MYSQL_HOST=mysql
     ports:
       - "9906:3306"
     expose:
@@ -27,10 +28,22 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4000:4000
+    healthcheck:
+      test: curl --fail 127.0.0.1:3306 || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
     networks:
       - shared-network
     depends_on:
       - mysql
+    command: sh -c "/wait && npm run dev"
+    environment:
+      - WAIT_HOSTS=mysql:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
 
   movie-client:
     container_name: movie-client
@@ -45,6 +58,14 @@ services:
       - shared-network
     depends_on:
       - movie-server
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - shared-network
 
 networks:
   shared-network:

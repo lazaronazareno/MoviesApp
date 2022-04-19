@@ -4,23 +4,27 @@ import { fileUpload } from './middleware/uploadfile'
 import cors from 'cors'
 import mysql from 'mysql2'
 import * as MySQLConnector from './mysql-connector'
-import { DATA_SOURCES } from './vars.config'
+import * as dotenv from 'dotenv'
 
 import moviesRouter from './routes/movies'
 
-const dataSource = DATA_SOURCES.mySqlDataSource
-
+dotenv.config()
 const app = express()
 app.use(cors())
 app.use(express.json())
 
 MySQLConnector.init()
 export const con = mysql.createConnection({
-  host: dataSource.DB_HOST,
-  user: dataSource.DB_USER,
-  password: dataSource.DB_PASSWORD,
-  database: dataSource.DB_DATABASE
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
 })
+
+console.log(process.env.MYSQL_HOST)
+console.log(process.env.MYSQL_USER)
+console.log(process.env.MYSQL_PASSWORD)
+console.log(process.env.MYSQL_DATABASE)
 app.use(fileUpload)
 
 const PORT = 4000

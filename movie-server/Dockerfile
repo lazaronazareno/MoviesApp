@@ -13,4 +13,8 @@ COPY . .
 
 RUN npm run tsc
 
-CMD ["sh", "-c", "npm run dev"]
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
+CMD ["npm run dev"]
