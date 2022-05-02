@@ -2,9 +2,6 @@
 import express from 'express'
 import path from 'path'
 import * as moviesServices from '../services/moviesServices'
-import csv from 'csvtojson'
-import { execute } from '../mysql-connector'
-import { MoviesQueries } from '../services/moviesQueries'
 
 export const getMovies: express.RequestHandler = async (req: express.Request, res: express.Response) => {
   try {
@@ -103,27 +100,17 @@ export const deleteMovie: express.RequestHandler = async (req: express.Request, 
 export const postData: express.RequestHandler = async (req: express.Request, res: express.Response) => {
   const csvFileName = '../csv/' + req.file?.filename
   const csvFilePath = path.join(__dirname, csvFileName)
-  const jsons = await csv({ delimiter: ';' }).fromFile(csvFilePath)
-  for (let i = 0; i < jsons.length; i++) {
-    const Titulo = jsons[i].titulo
-    const Genero = jsons[i].genero
-    const Año = jsons[i].año
-    const Director = jsons[i].director
-    const Actores = jsons[i].actores
+  try {
+    const data = await (moviesServices.postData(csvFilePath))
 
-    try {
-      const data = await execute(MoviesQueries.uploadData, [
-        Titulo, Genero, Año, Director, Actores
-      ])
-
-      res.status(200).json({
-        data
-      })
-    } catch (error) {
-      console.error('[moviesServices][addMovie][Error] ', typeof error === 'object' ? JSON.stringify(error) : error)
-      res.status(500).json({
-        message: ('There was an error' + ' ' + String(error))
-      })
-    }
+    res.status(200).json({
+      data
+    })
+  } catch (error) {
+    console.error('[moviesServices][addMovie][Error] ', typeof error === 'object' ? JSON.stringify(error) : error)
+    res.status(500).json({
+      message: ('There was an error when uploading files' + ' ' + String(error))
+    })
   }
+  console.log('finish')
 }

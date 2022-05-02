@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { MovieData, NewMovie } from '../types'
-import { execute } from '../mysql-connector'
+import { execute, executePost } from '../mysql-connector'
 import { MoviesQueries } from './moviesQueries'
 import csv from 'csvtojson'
 
@@ -57,7 +57,7 @@ export const deleteMovieByTitle = async (titulo: MovieData['titulo']): Promise<M
 }
 
 export const postData = async (name: string): Promise<[]> => {
-  const aaa: MovieData[] | any = []
+  const filesAdded: [] | any = []
   const jsons = await csv({ delimiter: ';' }).fromFile(name)
   for (let i = 0; i < jsons.length; i++) {
     const Titulo = jsons[i].titulo
@@ -66,11 +66,11 @@ export const postData = async (name: string): Promise<[]> => {
     const Director = jsons[i].director
     const Actores = jsons[i].actores
 
-    const data: MovieData[] = await execute<MovieData[]>(MoviesQueries.uploadData, [
+    const data: [] = await executePost<[]>(MoviesQueries.uploadData, [
       Titulo, Genero, Año, Director, Actores
     ])
-    aaa.push(data)
+    filesAdded.push(data)
   }
 
-  return aaa as []
+  return (filesAdded)
 }

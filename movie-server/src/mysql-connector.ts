@@ -59,3 +59,26 @@ export const execute = async <T>(query: string, params: string[] | Object): Prom
     throw new Error(error)
   }
 }
+
+export const executePost = async <T>(query: string, params: string[] | Object): Promise<T> => {
+  const filesError: [] | any = []
+  const filesAdded: [] | any = []
+  try {
+    if (!pool) throw new Error('Pool was not created. Ensure pool is created when running the app.')
+
+    return await new Promise<T>((resolve, reject) => {
+      pool.query(query, params, (error, results) => {
+        if (error != null) reject(error)
+        else {
+          const postResult = resolve(JSON.parse(JSON.stringify(results)))
+          filesAdded.push(postResult)
+        }
+      })
+    })
+  } catch (error: any) {
+    console.error('[mysql.connector][execute][Error]: ', error)
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    filesError.push(error)
+  }
+  return filesError
+}

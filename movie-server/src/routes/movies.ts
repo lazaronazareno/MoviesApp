@@ -2,25 +2,10 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
-import csv from 'csvtojson'
-import multer from 'multer'
-import path from 'path'
-import { con } from '../index'
 
 import * as controllers from '../controllers/movieControllers'
 
 const router = express.Router()
-
-const diskStorage = multer.diskStorage({
-  destination: path.join(__dirname, '../csv'),
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-movies-' + file.originalname)
-  }
-})
-
-const fileUpload = multer({
-  storage: diskStorage
-})
 
 router.get('/', controllers.getMovies)
 
@@ -34,41 +19,6 @@ router.patch('/:title', controllers.editMovie)
 
 router.delete('/delete/:title', controllers.deleteMovie)
 
-router.post('/test/', controllers.postData)
-
-router.post('/post/data', fileUpload.single('archivo'), async (req: express.Request, res: express.Response) => {
-  con.connect(async (err) => {
-    if (err) { res.status(500).send('server error') }
-    const csvFileName = '../csv/' + req.file?.filename
-    const csvFilePath = path.join(__dirname, csvFileName)
-
-    await csv({ delimiter: ';' }).fromFile(csvFilePath).then((source) => {
-      for (let i = 0; i < source.length; i++) {
-        const Titulo = source[i].titulo
-        const Genero = source[i].genero
-        const Año = source[i].año
-        const Director = source[i].director
-        const Actores = source[i].actores
-
-        const insertStatement = 'INSERT INTO movielist(titulo, genero, año, director, actores) VALUES(?, ?, ?, ?, ?)'
-        const items = [Titulo, Genero, Año, Director, Actores]
-        console.log(insertStatement)
-        console.log(items)
-
-        con.query(insertStatement, items, (err: any, results: any, fields: any) => {
-          if (err) {
-            console.log('Unable to insert item at row', i + 1)
-            return console.log(err)
-          }
-        })
-      }
-      console.log('Data stored in movies database')
-    }, function (err) {
-      console.log(err)
-    })
-    console.log('end 1')
-  })
-  console.log('end 2')
-})
+router.post('/post/data', controllers.postData)
 
 export default router

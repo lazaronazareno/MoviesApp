@@ -21,10 +21,6 @@ export const con = mysql.createConnection({
   database: process.env.MYSQL_DATABASE
 })
 
-console.log(process.env.MYSQL_HOST)
-console.log(process.env.MYSQL_USER)
-console.log(process.env.MYSQL_PASSWORD)
-console.log(process.env.MYSQL_DATABASE)
 app.use(fileUpload)
 
 const PORT = 4000
