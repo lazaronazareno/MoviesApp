@@ -1,6 +1,6 @@
 import React, { useEffect  } from "react"
 import { Link, useLocation } from "react-router-dom"
-import useAxios from "../libs/axiosInstance"
+import useAxios from "../../libs/axiosInstance"
 
 export const DeleteMovie = () => {
   const {response, error, fetchData } = useAxios({})

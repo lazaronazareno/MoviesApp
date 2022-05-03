@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import useAxios from '../libs/axiosInstance'
-import Loader from "./loader/loader"
+import useAxios from '../../libs/axiosInstance'
+import Loader from "../loader/loader"
 import { Link } from "react-router-dom";
 
 const UploadMovies: React.FC<unknown> = () => {

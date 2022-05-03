@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import useAxios from '../libs/axiosInstance'
-import Loader from '../components/loader/loader'
-import { MovieTable } from "./movieTable"
+import useAxios from '../../libs/axiosInstance'
+import Loader from '../loader/loader'
+import { MovieTable } from "../tableMovie"
 
 export const SearchMovie = () => {
   const {response, loading, error, fetchData } = useAxios({})

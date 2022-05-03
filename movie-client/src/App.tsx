@@ -3,8 +3,8 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import EditMovie  from './components/editMovie';
 import ListMovies from './components/listMovies'
-import UploadMovies from './components/moviesUpload'
-import { SearchMovie } from './components/searchMovies'
+import UploadMovies from './components/uploadMovies'
+import { SearchMovie } from './components/searchMovie/searchMovies'
 import AddMovie from './components/addMovie';
 import { DeleteMovie } from './components/deleteMovie';
 

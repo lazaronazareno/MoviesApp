@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react"
-import useAxios from '../libs/axiosInstance'
-import Loader from '../components/loader/loader'
+import React, { useState } from "react"
+import useAxios from '../../libs/axiosInstance'
+import Loader from '../loader/loader'
 import { useLocation } from "react-router-dom"
-import { MovieTable } from "./movieTable"
 import { Link } from "react-router-dom"
 
-export default function EditMovie () {
+export default function AddMovie () {
   const location = useLocation()
   const {response, loading, error, fetchData } = useAxios({})
-  const movie = response?.data.movie[0]
   const [values, setValues] = useState({
-    titulo: movie ? movie.titulo : '',
-    genero : movie ? movie.genero : '',
-    año : movie ? movie.año : '',
-    director : movie ? movie.director : '',
-    actores : movie ? movie.actores : '',
+    titulo: '',
+    genero : '',
+    año : '',
+    director : '',
+    actores : '',
   })
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +23,7 @@ export default function EditMovie () {
     event.preventDefault()
     setValues({ ...values })
     await fetchData({
-      method:"PATCH",
+      method:"POST",
       data: {...values},
       url:`${location.pathname}` ,
       headers:{
@@ -34,20 +32,10 @@ export default function EditMovie () {
     })
   }
 
-useEffect(() => {
-  fetchData({
-    method:"GET",
-    url:`${location.pathname}` ,
-    headers:{
-      accept: '/'
-    }
-  })
-},[])
-
     return (
         <form onSubmit={onSubmit} className="p-4 d-flex flex-column text-start">
           <div className="d-flex justify-content-between">
-            <h1>Edit Movie Form</h1>
+            <h1>New Movie Form</h1>
             <Link className="btn btn-dark my-3" to='/'>Go back</Link>
           </div>
           <label htmlFor="title" className="form-label">Titulo: </label>
@@ -60,18 +48,13 @@ useEffect(() => {
           <input name="director" className="form-control" id="director" onChange={onChange} type="text" />
           <label htmlFor="actors" className="form-label">Actores: </label>
           <input name="actores" className="form-control" id="actors" onChange={onChange} type="text" />
-          <button className="btn btn-dark" type="submit">Edit</button>
+          <button className="btn btn-dark my-3" type="submit">Submit</button>
           {loading && ( <Loader /> )}
           {error && ( <p>{error.message}</p> )}
-          {!loading && !error && response && (
-            response?.data.movieResponse 
-            ? <div className="m-2">
-                <p className="fs-2">Datos modificados : </p>
-                <MovieTable movies={[response?.data.movie]} disabled={true}/> 
-              </div>
-            : <div className="m-2">
-                <MovieTable movies={response?.data.movie} disabled={true}/> 
-              </div>
+          {!loading && !error && response?.data.movie && (
+            <div>
+              <h1>New Movie Added</h1>
+            </div>
           )}
         </form>
     )

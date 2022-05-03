@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
-import useAxios from '../libs/axiosInstance'
-import Loader from '../components/loader/loader'
-import { MovieTable } from "./movieTable"
+import useAxios from '../../libs/axiosInstance'
+import Loader from '../loader/loader'
+import { MovieTable } from "../tableMovie"
 import { Link } from "react-router-dom"
-import { SearchModal } from "./searchModal"
+import { SearchModal } from "../searchMovie/searchModal"
 
 const ListMovies = () => {
   const [page, setPage] = useState(0)
