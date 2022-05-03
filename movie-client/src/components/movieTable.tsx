@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 interface Props {
   movies: Array<{
@@ -8,13 +8,12 @@ interface Props {
     año: string
     director: string
     actores: string
-  }>
+    id?: number
+  }>,
+  disabled : boolean
 }
 
-export const MovieTable = ({movies}: Props) => {
-  const location = useLocation()
-  const title = location.pathname
-  const newTitle = title.replace(/[%]+20+/g, ' ')
+export const MovieTable = ({movies, disabled}: Props) => {
 
   return (
     <table className="table table-hover">
@@ -39,10 +38,10 @@ export const MovieTable = ({movies}: Props) => {
               <td>{movie.año}</td>
               <td>{movie.director}</td>
               <td>{movie.actores}</td>
-              { newTitle !== ('/' + movie.titulo) && (
+              { disabled === false && (
                 <>
                 <td>
-                  <Link to={`/${movie.titulo}`}>
+                  <Link to={`/${movie.id}`}>
                     <button type='button'className="btn btn-dark" data-bs-dismiss="modal">Edit</button>
                   </Link>
                 </td>

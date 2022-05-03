@@ -19,9 +19,9 @@ export const getMovies: express.RequestHandler = async (req: express.Request, re
   }
 }
 
-export const getMovieByTitle: express.RequestHandler = async (req: express.Request, res: express.Response) => {
+export const getMovieById: express.RequestHandler = async (req: express.Request, res: express.Response) => {
   try {
-    const movie = await moviesServices.getMovieByTitle(req.params.title)
+    const movie = await moviesServices.getMovieById(req.params.id as unknown as number)
 
     res.status(200).json({
       movie
@@ -53,7 +53,7 @@ export const searchMoviesByTitle: express.RequestHandler = async (req: express.R
 export const editMovie: express.RequestHandler = async (req: express.Request, res: express.Response) => {
   try {
     const movie = req.body
-    const movieResponse = await moviesServices.editMovie({ ...req.body })
+    const movieResponse = await moviesServices.editMovie({ ...req.body, id: req.params.id })
 
     res.status(200).json({
       movie, movieResponse

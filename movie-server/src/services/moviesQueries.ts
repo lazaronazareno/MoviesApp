@@ -5,11 +5,11 @@ export const MoviesQueries = {
 
   searchMoviesByTitle: 'SELECT * FROM movies.movielist WHERE movielist.titulo LIKE ?',
 
-  getMovieByTitle: 'SELECT * FROM movies.movielist WHERE movielist.titulo = ?',
+  getMovieByTitle: 'SELECT * FROM movies.movielist WHERE movielist.id = ?',
 
   addMovie: 'INSERT INTO movies.movielist (titulo, genero, año, director, actores) VALUES (?, ?, ?, ?, ?);',
 
-  editMovie: 'UPDATE movies.movielist SET titulo = ?, genero = ?, año = ?, director = ?, actores = ? WHERE titulo = ?',
+  editMovie: 'UPDATE movies.movielist SET titulo = IFNULL(?, titulo), genero = IFNULL(?, genero), año = IFNULL(?, año), director = IFNULL(?, director), actores = IFNULL(?, actores) WHERE id = ?',
 
   deleteMovie: 'DELETE FROM movies.movielist WHERE titulo = ?;',
 

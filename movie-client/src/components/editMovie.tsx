@@ -64,7 +64,14 @@ useEffect(() => {
           {loading && ( <Loader /> )}
           {error && ( <p>{error.message}</p> )}
           {!loading && !error && response && (
-            <MovieTable movies={response?.data.movieResponse ? [response?.data.movie] : response?.data.movie }/>
+            response?.data.movieResponse 
+            ? <div className="m-2">
+                <p className="fs-2">Datos modificados : </p>
+                <MovieTable movies={[response?.data.movie]} disabled={true}/> 
+              </div>
+            : <div className="m-2">
+                <MovieTable movies={response?.data.movie} disabled={true}/> 
+              </div>
           )}
         </form>
     )

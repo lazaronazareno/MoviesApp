@@ -42,7 +42,7 @@ export const SearchMovie = () => {
           {!loading && !error && response?.data.movies && response?.data.movies.length !== 0 && (
             <>
             {<h2>{response?.data.movies.length} results found</h2>}
-              <MovieTable movies={response?.data.movies} />
+              <MovieTable movies={response?.data.movies} disabled={false} />
             </>
           )}
         </form>

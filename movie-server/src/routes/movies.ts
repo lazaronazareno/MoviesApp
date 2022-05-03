@@ -9,13 +9,13 @@ const router = express.Router()
 
 router.get('/', controllers.getMovies)
 
-router.get('/:title', controllers.getMovieByTitle)
+router.get('/:id', controllers.getMovieById)
 
 router.get('/search/:title', controllers.searchMoviesByTitle)
 
 router.post('/add', controllers.addMovie)
 
-router.patch('/:title', controllers.editMovie)
+router.patch('/:id', controllers.editMovie)
 
 router.delete('/delete/:title', controllers.deleteMovie)
 

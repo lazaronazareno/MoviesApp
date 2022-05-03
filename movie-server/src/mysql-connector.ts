@@ -23,7 +23,7 @@ export const init = () => {
       }
       console.log('connected')
       const createStatament =
-            'CREATE TABLE movielist( titulo varchar(255) unique, genero varchar(255), año char(20), director varchar(255), actores varchar(255), primary key(titulo));'
+            'CREATE TABLE movielist( titulo varchar(255), genero varchar(255), año char(20), director varchar(255), actores varchar(255), id int NOT NULL AUTO_INCREMENT, primary key(id), UNIQUE (titulo));'
       pool.query(createStatament, (_err: any, _drop: any) => {
         if (err) return console.log(err)
       })

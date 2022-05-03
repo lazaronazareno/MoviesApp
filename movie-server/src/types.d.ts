@@ -4,6 +4,7 @@ export interface MovieData {
   año: string
   director: string
   actores: string
+  id?: number
 }
 
 export type NewMovie = MovieData

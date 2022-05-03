@@ -52,7 +52,7 @@ const ListMovies = () => {
             <SearchModal />
             <Link to='/upload' className="btn btn-lg btn-dark d-flex">Upload File</Link>
           </div>
-          <MovieTable movies={response?.data.movies} />
+          <MovieTable movies={response?.data.movies} disabled={false} />
             <div className="container d-flex justify-content-evenly p-2">
               { (page >= 10) && (
                 <button className="btn btn-lg btn-dark" onClick={handlerPrevPage}>Prev Page</button>

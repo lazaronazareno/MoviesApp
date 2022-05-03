@@ -22,8 +22,8 @@ export const searchMovieByTitle = async (titulo: MovieData['titulo']): Promise<M
   return await execute<MovieData[]>(MoviesQueries.searchMoviesByTitle, titulo)
 }
 
-export const getMovieByTitle = async (titulo: MovieData['titulo']): Promise<MovieData[]> => {
-  return await execute<MovieData[]>(MoviesQueries.getMovieByTitle, titulo)
+export const getMovieById = async (id: MovieData['id']): Promise<MovieData[]> => {
+  return await execute<MovieData[]>(MoviesQueries.getMovieByTitle, id as number)
 }
 
 export const addMovie = async (newMovie: NewMovie): Promise<MovieData[]> => {
@@ -38,13 +38,13 @@ export const addMovie = async (newMovie: NewMovie): Promise<MovieData[]> => {
 }
 
 export const editMovie = async (newMovie: MovieData): Promise<MovieData[]> => {
+  const titulo = newMovie.titulo ? newMovie.titulo : null
+  const genero = newMovie.genero ? newMovie.genero : null
+  const año = newMovie.año ? newMovie.año : null
+  const director = newMovie.director ? newMovie.director : null
+  const actores = newMovie.actores ? newMovie.actores : null
   const newData = await execute<MovieData[]>(MoviesQueries.editMovie, [
-    newMovie.titulo,
-    newMovie.genero,
-    newMovie.año,
-    newMovie.director,
-    newMovie.actores,
-    newMovie.titulo
+    titulo, genero, año, director, actores, newMovie.id
   ])
   return newData
 }

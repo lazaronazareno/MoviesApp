@@ -15,7 +15,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/"  element={<ListMovies />} />
-        <Route path="/:title"  element={<EditMovie />} />
+        <Route path="/:id"  element={<EditMovie />} />
         <Route path="/upload"  element={<UploadMovies />} />
         <Route path="/search"  element={<SearchMovie />} />
         <Route path="/add"  element={<AddMovie />} />
