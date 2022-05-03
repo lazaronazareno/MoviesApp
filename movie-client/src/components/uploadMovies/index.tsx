@@ -15,14 +15,13 @@ const UploadMovies: React.FC<unknown> = () => {
 
   const sendHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setLoad(!load)
 
     if(!file) {
       alert('not file')
     } else if (file.type !== 'text/csv') {
       alert('invalid file type: only .csv files accepted')
     } else {  
-      setLoad(true)
+      setLoad(!load)
       const formData = new FormData()
       formData.append('archivo', file as unknown as Blob)
   
@@ -32,7 +31,7 @@ const UploadMovies: React.FC<unknown> = () => {
         url:`/post/data` ,
       })
     }
-    setLoad(!load)
+    if (response?.data.data) { setLoad(!load)}
   }
 
   const moviesAdded = (cant: number) => {
@@ -47,6 +46,7 @@ const UploadMovies: React.FC<unknown> = () => {
           {error && ( <p>{error.message}</p> )}
         <Link className="btn btn-dark m-3" to='/'>Go back</Link>
           {response?.data.data && (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             response.data.data.map((results: [] | any) => {
               return results.affectedRows ? moviesAdded(results.affectedRows) : <p key={results[0].sqlMessage}>{results[0].sqlMessage}</p>
             })

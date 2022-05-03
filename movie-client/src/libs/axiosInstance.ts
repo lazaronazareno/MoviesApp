@@ -18,13 +18,11 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 		console.log(JSON.stringify(params))
 			try {
 				const result = await axios.request(params)
-				console.log(result)
 				setResponse(result)
 			}
 
 			catch(err) {
 				if (axios.isAxiosError(err)) {
-					console.log(err)
 					setError(err)
 				}
 			}

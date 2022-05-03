@@ -12,13 +12,10 @@ export const SearchMovie = () => {
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [event.target.name]: event.target.value })
-    console.log(values)
   }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(values)
-    console.log(values.search)
     await search(); // triggering the callback
   }
 
